@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  test_db:
+    image: postgres
+    container_name: test_db
+    restart: always
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_DB: loan_app
+      POSTGRES_PASSWORD: password
