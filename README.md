@@ -40,6 +40,8 @@ Refer to `./backend` and `./frontend` for their respective implementation detail
    ```
    APP_URL=
    APP_ENV=
+   POSTGRES_DB=
+   POSTGRES_PASSWORD=
    DATABASE_URL=
    CACHE_URL=
    ```
@@ -62,6 +64,8 @@ Refer to `./backend` and `./frontend` for their respective implementation detail
    ```
    APP_URL=0.0.0.0:8080
    APP_ENV=container
+   POSTGRES_DB=loan_app
+   POSTGRES_PASSWORD=password
    DATABASE_URL=postgres://postgres:password@demyst-technical-test-db-1:5432/loan_app?connect_timeout=10&sslmode=disable
    CACHE_URL=demyst-technical-test-cache-1:6379
    ```
@@ -78,7 +82,7 @@ Refer to `./backend` and `./frontend` for their respective implementation detail
    ./scripts/deploy_app.sh
    ```
 
-   The above command will deploy **BOTH** the `frontend` and the `backend` app. For `./scripts/deploy_app.sh`, the same command can be used to deploy either the `frontend` or the `backend` only. Given that you would like to deploy only the `backend` app, the command can be run as follows:
+   The above command will deploy **BOTH** the `frontend` and the `backend` app. For `./scripts/deploy_app.sh`, the same command can be used to deploy either the `frontend` or the `backend` only. If you would like to deploy only the `backend` app, the command can be run as shown below:
 
    ```
    ./scripts/deploy_app.sh backend
@@ -86,7 +90,7 @@ Refer to `./backend` and `./frontend` for their respective implementation detail
 
    To deploy `frontend` instead, you may replace `backend` in the command above with `frontend`.
 
-6. Perform database migrations:
+6. Perform database migrations **(only if you have deployed the `backend` app)**:
 
    You might be tempted to make an API call here, but the tables and schemas have not been set up yet. Doing so will result in an Internal Server Error when making any API call. Follow the steps mentioned below:
 
