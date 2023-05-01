@@ -104,7 +104,7 @@ Each domain (and subdomain) should have the following subdirectories wherever ap
 - `schemas`: Contains schemas pertaining to the domain that can be used either in the database or within the application logic itself.
 - `subdomains`: Contains domains that fall under a specific parent domain, with the relationship between `businesses` and `balances` being an example.
 - `validators`: Contains validation functions that are used to avoid repetitions in checking logic (refer to `loans/validators/validate_entity_existence.go` and its usage).
-- `main_test.go`: Contains various test scenarios that are accounted for within the backend. They will require the use of [`./scripts/integration_test.sh`](-integration_test.sh) to run.
+- `main_test.go`: Contains various test scenarios that are accounted for within the backend. They will require the use of `./scripts/integration_test.sh` to run.
 - `main.go`: Contains the router group in use for the domain itself.
 
 In development, the `API_URL` that is typically used here is `http://localhost:8080`. The endpoints typically have the following anatomy:
@@ -128,7 +128,7 @@ For all endpoints implemented, the response `Content-Type` is `application/json`
     - Body: None
   - Response Details:
     - Body:
-      - `providers` - an array containing `accounting_providers` objects.
+      - `providers` - an array containing `AccountingProvider` objects.
     - Possible Status Codes:
       - `200` - `http.StatusOK`
       - `500` - `http.StatusInternalServerError`
@@ -164,7 +164,7 @@ For all endpoints implemented, the response `Content-Type` is `application/json`
     - Body: None
   - Response Details:
     - Body:
-      - `businesses` - an array containing `business` objects
+      - `businesses` - an array containing `Business` objects
     - Possible Status Codes:
       - `200` - successful
       - `500` - internal server error
@@ -208,8 +208,8 @@ For all endpoints implemented, the response `Content-Type` is `application/json`
     - Body: None
   - Response Details:
     - Body:
-      - `balance_sheet` - an array containing `balance` objects
-      - `business` - the `business` object retrieved that corresponds to the provided `id`
+      - `balance_sheet` - an array containing `BalanceSummary` objects
+      - `business` - the `Business` object retrieved that corresponds to the provided `id`
     - Possible Status Codes:
       - `200` - successful
       - `400` - invalid `id` provided for business
@@ -268,9 +268,9 @@ For all endpoints implemented, the response `Content-Type` is `application/json`
     - Headers:
       - `Content-Type`: `application/json`
     - Body:
-      - `applicant` - `id` of the user submitting the loan application **(required)**.
-      - `business` - `id` of the business selected by the user **(required)**
-      - `accounting_provider` - `id` of the accounting provider selected by the user **(required)**
+      - `applicant` - `id` of the `User` submitting the loan application **(required)**.
+      - `business` - `id` of the `Business` selected by the user **(required)**
+      - `accounting_provider` - `id` of the `AccountingProvider` selected by the user **(required)**
       - `amount` - the desired amount of money to loan **(required)**
   - Response Details:
     - Body:
@@ -298,7 +298,7 @@ For all endpoints implemented, the response `Content-Type` is `application/json`
 
 ### `users`
 
-- `/users` - Retrieves details of a user.
+- `/users` - Retrieves details of a user in the form of a `User` object.
 
   - Available methods: `GET`
   - Request Details:
@@ -336,14 +336,14 @@ The flowchart did not seem to require me to implement a database (yes, I noticed
 
 These scripts are built to help make combinations of commands to run a certain task easier by abstracting them into a singular commands. There should be four scripts in this folder:
 
-- `create_domain.sh <your_domain_name>` - This command will create a folder called `./src/domains/<domain_name>` and create the subfolders mentioned in [`domains](##domains).
+- `create_domain.sh <your_domain_name>` - This command will create a folder called `./src/domains/<domain_name>` and create the subfolders mentioned in [`domains`](##domains).
 - `create_migration.sh <your_migration_name>` - This command creates a migration in the `./migrations` folder. Note that the naming convention of each migration is as such:
 
 ```
 version_number_<your_migration_name>.[up,down].sql
 ```
 
-- `integration_test.sh` - This command runs an integration test for all `*_test.go` files in the backend. Note that this spins up a containerized database and applies the migration on this database for the test, and then destroys this container when all tests have ended. Note that no unit tests are run in the backend.
+- `integration_test.sh` - This command runs an integration test for all `*_test.go` files in the backend. Note that this spins up a containerized database and applies the migration on this database for the test, and then destroys this container when all tests have ended.
 
 - `run_migration.sh <your_database_url>` - This command applies the selected migration on `<your_database_url>`. The selection can be done via referring to the documentations for [golang-migrate](https://github.com/golang-migrate/migrate).
 
@@ -442,7 +442,7 @@ This section is a step-by-step on how to run certain basic operations.
       cp example.env test.env
       ```
 
-  2.  For `development.env`, fill the fields as shown below:
+  2.  For `test.env`, fill the fields as shown below:
 
       ```
       APP_URL=localhost:8080
