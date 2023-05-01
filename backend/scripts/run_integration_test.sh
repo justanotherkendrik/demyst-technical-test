@@ -11,3 +11,4 @@ go test ./...
 docker stop test_db
 
 docker system prune -f
+docker image rm postgres
